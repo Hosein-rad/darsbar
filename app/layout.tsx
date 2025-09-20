@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Katibeh } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
