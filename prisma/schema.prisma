@@ -15,6 +15,13 @@ datasource db {
 
 model Student {
   id Int @id @default(autoincrement())
-  phone_number Int
-  national_code Int @unique
+  nationalID String @unique
+  phone_number String
+}
+
+model Teacher {
+  id Int @id @default(autoincrement())
+  nationalID String @unique
+  personalID String @unique
+  phone_number String
 }

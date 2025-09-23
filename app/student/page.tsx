@@ -1,4 +1,11 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
+  const [nationalID, setNationalID] = useState();
+  const [phone_number, setPhoneNumber] = useState();
+
   return (
     <div className="h-screen">
       <form
@@ -13,15 +20,17 @@ export default function Home() {
         </h1>
         <label
           className="w-[60dvw] pt-5 pb-1 text-[18px] text-right"
-          htmlFor="national_id"
+          htmlFor="nationalID"
         >
           کد ملی: <b className="text-[14px]">(10 رقم)</b>
         </label>
         <input
           className="w-[50%] p-1 border-1 border-gray-400 rounded-[10px]"
           type="number"
-          name="national_id"
+          name="nationalID"
           placeholder=" مثال: 4261234567"
+          defaultValue={nationalID}
+          onChange={(e) => setNationalID(e.target.value)}
         />
         <label
           className="w-[60dvw] pt-5 pb-1 text-[18px] text-right"
@@ -34,10 +43,35 @@ export default function Home() {
           type="number"
           name="phone_number"
           placeholder=" مثال: 09171234567"
+          defaultValue={phone_number}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <button
           className="mt-10 pb-2 px-8 bg-gray-800 text-white rounded-full"
           type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            console.log(nationalID, phone_number);
+            if (nationalID?.length == 10 && phone_number?.length == 11) {
+              fetch("/api/student", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  nationalID: nationalID,
+                  phone_number: phone_number,
+                }),
+              })
+                .then((data) => data.json())
+                .then((user) =>
+                  user?.success ? alert("ثبت شد!") : alert("مشکلی پیش آمد!")
+                );
+            } else {
+              console.log(nationalID?.length, phone_number?.length);
+              alert("لطفا ورودی ها را به درستی پر کنید");
+            }
+          }}
         >
           ورود
         </button>
