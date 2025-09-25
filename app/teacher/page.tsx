@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [nationalID, setNationalID] = useState();
-  const [personalID, setPersonalID] = useState();
-  const [phone_number, setPhoneNumber] = useState();
+  const [nationalID, setNationalID] = useState<string | undefined>();
+  const [personalID, setPersonalID] = useState<string | undefined>();
+  const [phone_number, setPhoneNumber] = useState<string | undefined>();
 
   return (
     <div className="h-screen">
@@ -31,7 +31,9 @@ export default function Home() {
           name="national_id"
           placeholder=" مثال: 4261234567"
           defaultValue={nationalID}
-          onChange={(e) => setNationalID(e.target.value)}
+          onChange={(e) =>
+            setNationalID(e.target.value)
+          }
         />
         <label
           className="w-[60dvw] pt-5 pb-1 text-[18px] text-right"
@@ -67,9 +69,9 @@ export default function Home() {
           onClick={(e) => {
             e.preventDefault();
             if (
-              nationalID?.length == 10 &&
-              personalID?.length == 8 &&
-              phone_number?.length == 11
+              nationalID?.toString().length == 10 &&
+              personalID?.toString().length == 8 &&
+              phone_number?.toString().length == 11
             ) {
               fetch("/api/teacher", {
                 method: "POST",

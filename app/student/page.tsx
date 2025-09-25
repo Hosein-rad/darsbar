@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [nationalID, setNationalID] = useState();
-  const [phone_number, setPhoneNumber] = useState();
+  const [nationalID, setNationalID] = useState<string | undefined>();
+  const [phone_number, setPhoneNumber] = useState<string | undefined>();
 
   return (
     <div className="h-screen">
@@ -52,7 +52,10 @@ export default function Home() {
           onClick={(e) => {
             e.preventDefault();
             console.log(nationalID, phone_number);
-            if (nationalID?.length == 10 && phone_number?.length == 11) {
+            if (
+              nationalID?.toString().length == 10 &&
+              phone_number?.toString().length == 11
+            ) {
               fetch("/api/student", {
                 method: "POST",
                 headers: {
