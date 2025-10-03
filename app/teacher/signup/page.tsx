@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Signup() {
   const [userInfo, setUserInfo] = useState({});
@@ -22,8 +22,6 @@ export default function Signup() {
           : alert("مشکلی پیش آمد! لطفا دوباره امتحان کنید")
       );
   }
-
-  useEffect(() => console.log(userInfo), [userInfo]);
 
   return (
     <div className="h-dvh flex flex-col items-center justify-center">
