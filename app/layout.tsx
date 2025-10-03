@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" dir="rtl">
       <body className={katibeh.className}>
-        <header className="h-[5dvh] w-screen bg-blue-200 flex justify-between fixed">
+        <header className="h-[5dvh] w-screen bg-blue-200 flex justify-between">
           <div>DarkMode</div>
           <div>Logo</div>
         </header>
