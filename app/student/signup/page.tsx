@@ -4,23 +4,97 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Signup() {
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<{
+    name: string | undefined;
+    age: string | undefined;
+    national_id: string | undefined;
+    phone_number: string | undefined;
+    school: string | undefined;
+    grade: string | undefined;
+    branch: string | undefined; // *** MAKE A TYPE INTERFACE
+  }>({
+    name: undefined,
+    age: undefined,
+    national_id: undefined,
+    phone_number: undefined,
+    school: undefined,
+    grade: undefined,
+    branch: undefined,
+  });
+
+  // checks if entries are valid via client *** turn into switch case ??
+  function checkEntry(userInfo: {
+    name: string | undefined;
+    age: string | undefined;
+    national_id: string | undefined;
+    phone_number: string | undefined;
+    school: string | undefined;
+    grade: string | undefined;
+    branch: string | undefined; // *** MAKE A TYPE INTERFACE
+  }) {
+    const badEntry: string[] = [];
+
+    if (userInfo.name !== undefined && userInfo.name.length < 5) {
+      badEntry.push(`نام: ${userInfo.name}`);
+    } else if (userInfo.name === undefined)
+      badEntry.push(" نام و نام خانوادگی خالی است");
+
+    if (
+      userInfo.age !== undefined &&
+      (Number(userInfo.age) < 8 || Number(userInfo.age) > 25)
+    ) {
+      badEntry.push(`سن: ${userInfo.name}`);
+    } else if (userInfo.age === undefined) badEntry.push(" سن خالی است");
+
+    if (
+      userInfo.national_id !== undefined &&
+      userInfo.national_id.length != 10
+    ) {
+      badEntry.push(`کدملی: ${userInfo.national_id}`);
+    } else if (userInfo.national_id === undefined)
+      badEntry.push("کد ملی خالی است");
+
+    if (
+      userInfo.phone_number !== undefined &&
+      userInfo.phone_number.length != 11
+    ) {
+      badEntry.push(`شماره‌تلفن: ${userInfo.phone_number}`);
+    } else if (userInfo.phone_number === undefined)
+      badEntry.push("شماره تلفن خالی است");
+    if (userInfo.school === undefined) badEntry.push("مدرسه: انتخاب نشده");
+    if (userInfo.grade === undefined) badEntry.push("کلاس: انتخاب نشده");
+    if (userInfo.branch === undefined) badEntry.push("شعبه: انتخاب نشده");
+
+    return badEntry;
+  }
 
   async function postData(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch("/api/student", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(userInfo),
-    })
-      .then((data) => data.json())
-      .then((user) =>
-        user?.success
-          ? alert("ثبت شد!")
-          : alert("مشکلی پیش آمد! لطفا دوباره امتحان کنید")
+    const badEntry = checkEntry(userInfo);
+    console.log(userInfo);
+    if (badEntry.length > 0) {
+      alert(
+        `لطفا ورودی های خود را درست وارد کنید...\n ${badEntry.map(
+          (item) => `\n ${item}`
+        )}`
       );
+      badEntry.length = 0;
+      return;
+    } else {
+      fetch("/api/student", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      })
+        .then((data) => data.json())
+        .then((user) =>
+          user?.success
+            ? alert("ثبت شد!")
+            : alert("مشکلی پیش آمد! لطفا دوباره امتحان کنید")
+        );
+    }
   }
   return (
     <div className="h-dvh flex flex-col items-center justify-center">
